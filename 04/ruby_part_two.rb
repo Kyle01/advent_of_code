@@ -1,7 +1,7 @@
 file = File.open('input.txt')
 input_lines = file.readlines.map(&:chomp)
 
-class Passports
+class Passport
     def initialize(passport_lines)
         @byr = nil
         @iyr = nil
@@ -125,7 +125,7 @@ passport_inputs = create_passport_input(input_lines)
 valid_passports = 0 
 
 passport_inputs.each do |input|
-    passport = Passports.new(input)
+    passport = Passport.new(input)
     valid_passports += 1 if passport.valid? 
 end
 
