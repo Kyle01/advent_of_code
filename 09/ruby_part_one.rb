@@ -14,13 +14,10 @@ def preamble(k, input_lines)
 end
 
 def has_property(preamble, target_num)
-    puts preamble.join(',')
     k = 0
     while k < 24
         j = k + 1
         while j < 25 
-            puts preamble[k]
-            puts preamble[j]
             return true if preamble[k] + preamble[j] == target_num
             j += 1
         end
@@ -28,10 +25,6 @@ def has_property(preamble, target_num)
     end
     false 
 end
-# get array of 25 additives 
-# get the target sum
-# determine if it is correct, if not return it 
-# loop, but increase k 
 
 k = 0 
 solution = -1
