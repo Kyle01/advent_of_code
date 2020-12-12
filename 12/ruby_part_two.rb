@@ -74,11 +74,6 @@ end
 file = File.open('input.txt')
 input_lines = file.readlines.map(&:chomp)
 
-ship_x = 0
-ship_y = 0 
-waypoint_x = 10
-waypoint_y = 1
-
 boat = Boat.new
 boat.drive(input_lines)
 puts boat.manhattan_distance
