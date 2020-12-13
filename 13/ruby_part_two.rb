@@ -10,4 +10,25 @@ nums.each_with_index do |num, i|
     hash[num] = i
 end
 
-puts hash
+nums.delete(0)
+
+found = false
+test_attempt = nums[0]
+
+puts hash 
+puts nums.join(',')
+
+while !found
+    found = true 
+    k = 0
+    while k < nums.length
+        if (test_attempt + hash[nums[k]]) % nums[k] != 0
+            found = false
+            k = nums.length
+            test_attempt += 1 
+        end
+        k += 1
+    end
+end
+
+puts test_attempt
