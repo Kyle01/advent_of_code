@@ -1,5 +1,6 @@
-
 class MemorySlot
+    attr_reader :count
+
     def initialize(index)
         @count = 1 
         @last = index
@@ -17,14 +18,9 @@ class MemorySlot
 
         @last - @second_last_spoken 
     end
-
-    def count 
-        @count
-    end
 end
 
-file = File.open('input.txt')
-input = file.readlines.map(&:chomp)
+input = File.open('input.txt').readlines.map(&:chomp)
 nums = input[0].split(',').map(&:to_i)
 memory = {}
 
