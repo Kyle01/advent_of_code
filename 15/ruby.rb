@@ -7,14 +7,14 @@ class MemorySlot
 
     def increment(index)
         @count += 1 
-        @second_last_spoken = @last
+        @second_last = @last
         @last = index 
     end
 
     def next_spoken 
         return 0 if @count <= 1
 
-        @last - @second_last_spoken 
+        @last - @second_last 
     end
 end
 
