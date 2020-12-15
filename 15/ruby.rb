@@ -1,6 +1,4 @@
 class MemorySlot
-    attr_reader :count
-
     def initialize(index)
         @count = 1 
         @last = index
@@ -14,7 +12,7 @@ class MemorySlot
     end
 
     def next_spoken 
-        return 0 if count <= 1
+        return 0 if @count <= 1
 
         @last - @second_last_spoken 
     end
