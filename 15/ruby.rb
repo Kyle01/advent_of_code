@@ -1,8 +1,3 @@
-file = File.open('input.txt')
-input = file.readlines.map(&:chomp)
-
-nums = input[0].split(',').map(&:to_i)
-memory = Hash.new(0)
 
 class MemorySlot
     def initialize(index)
@@ -18,6 +13,8 @@ class MemorySlot
     end
 
     def next_spoken 
+        return 0 if count <= 1
+
         @last - @second_last_spoken 
     end
 
@@ -26,12 +23,15 @@ class MemorySlot
     end
 end
 
-nums.each_with_index do |num, i|
-    memory[num] = MemorySlot.new(i)
-end
+file = File.open('input.txt')
+input = file.readlines.map(&:chomp)
+nums = input[0].split(',').map(&:to_i)
+memory = {}
+
+nums.each_with_index { |num, i| memory[num] = MemorySlot.new(i) }
 
 k = nums.length
-while k < 30000000
+while k < 2020
     previous_spoken = nums[k-1]
 
     if !memory.key?(previous_spoken)
@@ -40,11 +40,7 @@ while k < 30000000
         memory[previous_spoken].increment(k-1)
     end
 
-    if memory[previous_spoken].count <= 1
-        next_spoken = 0 
-    else
-        next_spoken = memory[previous_spoken].next_spoken
-    end
+    next_spoken = memory[previous_spoken].next_spoken
     
     nums << next_spoken
     k += 1 
