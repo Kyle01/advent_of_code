@@ -27,7 +27,7 @@ memory = {}
 nums.each_with_index { |num, i| memory[num] = MemorySlot.new(i) }
 
 k = nums.length
-while k < 2020
+while k < 30000000
     previous_spoken = nums[k-1]
 
     if !memory.key?(previous_spoken)
