@@ -54,9 +54,18 @@ def parse_operators(line)
 end
 
 def compute_values(nums, operators)
+    while operators.include?('+')
+        i = operators.find_index('+')
+        operators.delete_at(i)
+        num_a = nums[i]
+        num_b = nums[i+1]
+        nums.delete_at(i)
+        nums.delete_at(i)
+        nums.insert(i, evaluate(num_a, num_b, "+"))
+    end
+
+
     while nums.length > 1
-        puts nums.join(',')
-        puts operators.join(',')
         operator = operators.shift 
         num_one = nums.shift
         num_two = nums.shift
@@ -68,9 +77,6 @@ def compute_values(nums, operators)
 end
 
 def compute_line(line)
-    nums = parse_nums(line)
-    operators = parse_operators(line)
-
     while line.include?('(')
         left_p_count = 0 
         start_i = -1
@@ -93,6 +99,13 @@ def compute_line(line)
         return compute_line(line)
     end
 
+    nums = parse_nums(line)
+    operators = parse_operators(line)
+    
+    puts line 
+    puts nums.join(',')
+    puts operators.join(',')
+
     compute_values(nums, operators)
 end
 
@@ -101,7 +114,9 @@ input_lines = file.readlines.map(&:chomp)
 
 accumulator = 0 
 input_lines.each do |line|
-    accumulator += compute_line(line)
+    puts line
+    answer = compute_line(line)
+    accumulator += compute_line(line)[0]
 end
 
 puts accumulator
