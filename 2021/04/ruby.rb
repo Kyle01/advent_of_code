@@ -67,18 +67,23 @@ numbers_called = lines[0].split(',').map(&:to_i)
 
 k = 2
 boards = []
-score = 0 
+winning_board_indexes = []
+last_winning_board = -1 
 while k < lines.length
     boards << BingoBoard.new(lines[k..k+5])
     k += 6
 end
 numbers_called.each do |number|
-    boards.each do |board|
+    boards.each_with_index do |board, index|
         board.call_number(number)
-        if board.check_for_bingo
-            score = board.calculate_score 
+        if board.check_for_bingo && winning_board_indexes.include?(index) == false
+            winning_board_indexes << index
         end
     end
-    break if score != 0
+    if winning_board_indexes.length == boards.length
+        last_winning_board = winning_board_indexes[-1]
+    end
+    break if last_winning_board != -1
 end
-puts score
+
+puts boards[last_winning_board].calculate_score
