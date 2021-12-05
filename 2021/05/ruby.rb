@@ -33,7 +33,7 @@ def valid_line(line)
 end
 
 def draw_lines(grid, line)
-    return unless valid_line(line)
+    # return unless valid_line(line)
     arr = line.gsub(' -> ', ',').split(',')
     start_position = [arr[0].to_i, arr[1].to_i]
     end_position = [arr[2].to_i, arr[3].to_i]
