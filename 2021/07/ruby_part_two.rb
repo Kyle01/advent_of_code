@@ -8,10 +8,14 @@ move_attemps = Hash.new(0)
 attemps = 1000
 k = 0 
 
+def nth_triangle(n)
+  n * (n + 1) / 2
+end
+
 def calculate_move(input, k)
     sum = 0 
     input.each do |i|
-        sum += (k - i).abs
+        sum += nth_triangle((k - i).abs)
     end
     sum 
 end
