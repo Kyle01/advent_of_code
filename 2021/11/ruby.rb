@@ -9,10 +9,11 @@ def construct_grid (lines)
   grid
 end
 
-def print_grid (grid)
+def print_grid (grid, blasts, steps)
   grid.each do |row|
     puts row.join
   end
+  puts "Blasts: #{blasts} Steps: #{steps}"
 end
 
 def increase_one(grid)
@@ -39,14 +40,17 @@ def has_sites_remaining(grid)
   end
   has_sites
 end
+
 def handle_blast_sites(grid)
+  blasts = 0 
   while has_sites_remaining(grid)
     grid.each_with_index do |row, i|
       row.each_with_index do |cell, j|
         if cell == 'A'
+          blasts += 1
           # get left cell
           if j > 0
-            if grid[i][j-1] == '9'
+            if grid[i][j-1].to_s == '9'
               grid[i][j-1] = 'A'
             elsif grid[i][j-1].to_i.to_s == grid[i][j-1].to_s
               grid[i][j-1] = (grid[i][j-1].to_i + 1).to_s
@@ -54,7 +58,7 @@ def handle_blast_sites(grid)
           end
           # get right cell
           if j < grid[i].length - 1
-            if grid[i][j+1] == '9'
+            if grid[i][j+1].to_s == '9'
               grid[i][j+1] = 'A'
             elsif grid[i][j+1].to_i.to_s == grid[i][j+1].to_s
               grid[i][j+1] = (grid[i][j+1].to_i + 1).to_s
@@ -62,7 +66,7 @@ def handle_blast_sites(grid)
           end
           # get top cell
           if i > 0
-            if grid[i-1][j] == '9'
+            if grid[i-1][j].to_s == '9'
               grid[i-1][j] = 'A'
             elsif grid[i-1][j].to_i.to_s == grid[i-1][j].to_s
               grid[i-1][j] =( grid[i-1][j].to_i + 1).to_s
@@ -70,7 +74,7 @@ def handle_blast_sites(grid)
           end
           # get bottom cell
           if i < grid.length - 1
-            if grid[i+1][j] == '9'
+            if grid[i+1][j].to_s == '9'
               grid[i+1][j] = 'A'
             elsif grid[i+1][j].to_i.to_s == grid[i+1][j].to_s
               grid[i+1][j] = (grid[i+1][j].to_i + 1).to_s
@@ -78,7 +82,7 @@ def handle_blast_sites(grid)
           end
           # get top left cell
           if i > 0 && j > 0
-            if grid[i-1][j-1] == '9'
+            if grid[i-1][j-1].to_s == '9'
               grid[i-1][j-1] = 'A'
             elsif grid[i-1][j-1].to_i.to_s == grid[i-1][j-1].to_s
               grid[i-1][j-1] = (grid[i-1][j-1].to_i + 1).to_s
@@ -86,7 +90,7 @@ def handle_blast_sites(grid)
           end
           # get top right cell
           if i > 0 && j < grid[i].length - 1
-            if grid[i-1][j+1] == '9'
+            if grid[i-1][j+1].to_s == '9'
               grid[i-1][j+1] = 'A'
             elsif grid[i-1][j+1].to_i.to_s == grid[i-1][j+1].to_s
               grid[i-1][j+1] = (grid[i-1][j+1].to_i + 1).to_s
@@ -94,7 +98,7 @@ def handle_blast_sites(grid)
           end
           # get bottom left cell
           if i < grid.length - 1 && j > 0
-            if grid[i+1][j-1] == '9'
+            if grid[i+1][j-1].to_s == '9'
               grid[i+1][j-1] = 'A'
             elsif grid[i+1][j-1].to_i.to_s == grid[i+1][j-1].to_s
               grid[i+1][j-1] = (grid[i+1][j-1].to_i + 1).to_s
@@ -102,7 +106,7 @@ def handle_blast_sites(grid)
           end
           # get bottom right cell
           if i < grid.length - 1 && j < grid[i].length - 1
-            if grid[i+1][j+1] == '9'
+            if grid[i+1][j+1].to_s == '9'
               grid[i+1][j+1] = 'A'
             elsif grid[i+1][j+1].to_i.to_s == grid[i+1][j+1].to_s
               grid[i+1][j+1] = (grid[i+1][j+1].to_i + 1).to_s
@@ -113,7 +117,14 @@ def handle_blast_sites(grid)
       end
     end
   end
-  grid
+  grid.each_with_index do |row, i|
+    row.each_with_index do |cell, j|
+      if cell == 'X'
+        grid[i][j] = 0
+      end
+    end
+  end
+  {grid: grid, blasts: blasts}
 end
 
 def handle_blasts (grid)
@@ -124,25 +135,23 @@ def handle_blasts (grid)
       end
     end
   end
-  handle_blast_sites(grid)
-end
-
-def step (grid)
-    grid = increase_one(grid)
-    gird = handle_blasts(grid)
-    grid
+  step = handle_blast_sites(grid)
+  {grid: step.fetch(:grid), blasts: step.fetch(:blasts)}
 end
 
 def do_steps (grid, steps)
+  blasts = 0
   steps.times do |i|
-    grid = step(grid)
-    print_grid(grid)
+    grid = increase_one(grid)
+    stepped = handle_blasts(grid)
+    grid = stepped.fetch(:grid)
+    blasts += stepped.fetch(:blasts)
+    print_grid(grid, blasts, i+1)
     puts "\n"
   end
-  grid
 end
 
 grid = construct_grid(lines)
-print_grid(grid)
+print_grid(grid, 0, 0)
 puts "\n"
-do_steps(grid, 2)
+do_steps(grid, 195)
