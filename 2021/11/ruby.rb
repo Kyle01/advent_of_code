@@ -41,6 +41,19 @@ def has_sites_remaining(grid)
   has_sites
 end
 
+def in_sync(grid)
+  test_value = grid[0][0]
+  in_sync = true
+  grid.each do |row|
+    row.each do |cell|
+      if cell != test_value
+        in_sync = false
+      end
+    end
+  end
+  in_sync
+end
+
 def handle_blast_sites(grid)
   blasts = 0 
   while has_sites_remaining(grid)
@@ -147,6 +160,7 @@ def do_steps (grid, steps)
     grid = stepped.fetch(:grid)
     blasts += stepped.fetch(:blasts)
     print_grid(grid, blasts, i+1)
+    break if in_sync(grid)
     puts "\n"
   end
 end
@@ -154,4 +168,4 @@ end
 grid = construct_grid(lines)
 print_grid(grid, 0, 0)
 puts "\n"
-do_steps(grid, 195)
+do_steps(grid, 1000)
