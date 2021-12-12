@@ -1,38 +1,48 @@
 file = File.open('input.txt')
 lines = file.readlines.map(&:chomp)
 
-def parse_input(str)
-    first = str.split('-')[0]
-    second = str.split('-')[1]
-
-    if first == 'start' || first == 'end'
-        first = first 
-    elsif first.upcase == first 
-        first = "#{first}_big"
-    else
-        first = "#{first}_small"
+class Node 
+    attr_accessor :children, :large, :name
+    def initialize(name, children = nil)
+        @name = name
+        @children = [children]
+        @large = name.upcase == name ? true : false
     end
 
-    if second.upcase == second 
-        second = "#{second}_big"
-    elsif second == 'start' || second == 'end'
-        second = second 
-    else
-        second = "#{second}_small"
+    def add_child(child)
+        @children << child
     end
 
-    [first, second]
+    def to_s
+        str = "#{@name} -> "
+        @children.each do |child|
+            str += "#{child}"
+        end
+        str
+    end
 end
 
-def create_connections(lines)
-    connections = {}
-    lines.each do |line|
-        parsed = parse_input(line)
-        puts parsed.join(',')
-        connections[parsed[0]] = parsed[1]
-    end
-    connections
-end
+first = lines[0].split('-')[0]
+second = lines[0].split('-')[1]
+tree = Node.new(first, Node.new(second))
 
-connections = create_connections(lines)
-puts connections
+k = 1 
+while k < lines.length
+    first = lines[k].split('-')[0] 
+    second = lines[k].split('-')[1]
+    pointer = tree
+    while pointer != nil
+        if first = pointer.name
+            pointer.add_child(Node.new(second))
+            break
+        elsif second = pointer.name
+            pointer.add_child(Node.new(first))
+            break
+        else 
+            pointer = pointer.children[0]
+        end
+    end
+    tree = pointer
+    k += 1 
+end
+puts  tree
