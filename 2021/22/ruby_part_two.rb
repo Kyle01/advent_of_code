@@ -1,6 +1,14 @@
 file = File.open('input.txt')
 lines = file.readlines.map(&:chomp)
 
+def calculate_cubes(diagram)
+    count = 0
+    diagram.each do |_, v|
+        count += v.length
+    end
+    count
+end
+
 def handle_instruction(line, diagram)
     instruction = line.split(' ')[0]
     steps = line.split(' ')[1].split(',')
@@ -69,8 +77,41 @@ def handle_instruction(line, diagram)
         end
         diagram['x'] = new_x_ranges
 
-        # y_range = steps[1].split("=")[1].split("..").map(&:to_i)
-        # z_range = steps[2].split("=")[1].split("..").map(&:to_i)
+        y_ranges = diagram['y']
+        new_y_range = []
+        y_ranges.each do |y_range|
+            if y_instruction[0].between?(y_range[0], y_range[1]) || y_instruction[1].between?(y_range[0], y_range[1])
+                if y_instruction[0] <= y_range[0] && y_instruction[1] >= y_range[1]
+                    next
+                elsif y_instruction[0] <= y_range[0]
+                    new_y_range << [y_instruction[1]+1, y_range[1]]
+                elsif y_instruction[1] >= y_range[1]
+                    new_y_range << [y_range[0],y_instruction[0]-1]
+                else
+                    new_y_range << [y_range[0], y_instruction[0]-1]
+                    new_y_range << [y_instruction[1]+1, y_range[1]]
+                end
+            end
+        end
+        diagram['y'] = new_y_range
+
+        z_ranges = diagram['z']
+        new_z_ranges = []
+        z_ranges.each do |z_range|
+            if z_instruction[0].between?(z_range[0], z_range[1]) || z_instruction[1].between?(z_range[0], z_range[1])
+                if z_instruction[0] <= z_range[0] && z_instruction[1] >= z_range[1]
+                    next
+                elsif z_instruction[0] <= z_range[0]
+                    new_z_ranges << [z_instruction[1]+1, z_range[1]]
+                elsif z_instruction[1] >= z_range[1]
+                    new_z_ranges << [z_range[0],z_instruction[0]-1]
+                else
+                    new_z_ranges << [z_range[0], z_instruction[0]-1]
+                    new_z_ranges << [z_instruction[1]+1, z_range[1]]
+                end
+            end
+        end
+        diagram['z'] = new_z_ranges
     end
 
     diagram
