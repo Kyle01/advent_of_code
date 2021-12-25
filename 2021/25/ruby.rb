@@ -66,7 +66,7 @@ map.each { |x| puts x.join(" ") }
 puts "\n"
 
 k = 1
-while k < 10
+while k < 2
     new_map = step(map)
     stuck = stuck?(map, new_map)
     puts "Step #{k}: stuck: #{stuck}"
