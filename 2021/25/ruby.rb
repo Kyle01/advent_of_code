@@ -53,25 +53,46 @@ def step_east(map)
 end
 
 def step_south(map)
-    map
+    new_map = Marshal.load(Marshal.dump(map))
+    j = 0 
+    while j < map.length
+        k = 0 
+        while k < map[0].length
+            if j == map.length - 1 && map[j][k] == 'v' && map[0][k] == '.'
+                new_map[0][k] = 'v'
+                new_map[j][k] = '.'
+            elsif map[j][k] == 'v' && j < map.length - 1 && map[j+1][k] == '.'
+                new_map[j][k] = '.'
+                new_map[j+1][k] = 'v'
+            end
+            k += 1
+        end
+        j += 1 
+    end
+    new_map
 end
 
 def stuck?(a, b)
-    false
+    sol = true
+    a.each_with_index do |row, i|
+        row.each_with_index do |col, j|
+            if col != b[i][j]
+                sol = false
+            end
+        end
+    end
+    sol
 end
 
 map = create_map(lines)
-puts 'Step: 0'
-map.each { |x| puts x.join(" ") }
-puts "\n"
-
+stuck = false 
 k = 1
-while k < 2
+while !stuck
     new_map = step(map)
     stuck = stuck?(map, new_map)
     puts "Step #{k}: stuck: #{stuck}"
     map = new_map
-    map.each { |x| puts x.join(" ") }
-    puts "\n"
+    # map.each { |x| puts x.join(" ") }
+    # puts "\n"
     k += 1 
 end
