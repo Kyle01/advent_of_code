@@ -2,7 +2,7 @@ def crates_to_s crates
     str = ""
 
     crates.each_with_index do |stack, i|
-        str += "#{i + 1} #{stack.join(',')} \n"
+        str += "#{i + 1} - #{stack.join(',')} len: #{stack.size}\n"
     end
 
     str
@@ -52,10 +52,10 @@ def solve_moves input
         num = line.split(' ')[1].to_i
         a = line.split(' ')[3].to_i - 1
         b = line.split(' ')[5].to_i - 1
-
-        num.times do
-            crates[b].push(crates[a].pop())
-        end
+        
+        helper = []
+        num.times {|_| helper.unshift(crates[a].pop())}
+        crates[b].concat(helper)
     end
 
     crates
