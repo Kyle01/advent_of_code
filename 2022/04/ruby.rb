@@ -3,8 +3,8 @@ def fully_contained?(line)
     arr_one = (a.split('-')[0]..a.split('-')[1]).to_a
     arr_two = (b.split('-')[0]..b.split('-')[1]).to_a
 
-    return true if arr_one.all? { |e| arr_two.include?(e) }
-    return true if arr_two.all? { |e| arr_one.include?(e) }
+    return true if arr_one.any? { |e| arr_two.include?(e) }
+    return true if arr_two.any? { |e| arr_one.include?(e) }
 
     false
 end
