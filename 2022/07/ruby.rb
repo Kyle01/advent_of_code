@@ -36,8 +36,8 @@ lines = File.open('input.txt').readlines.map(&:chomp)
 current_path = nil
 root_directory = nil
 current_directory = nil
-j = 1
-k = 3
+j = 0
+k = 2
 while j < lines.length
     line = lines[j]
     if line == '$ cd /'
