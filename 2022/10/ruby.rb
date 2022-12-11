@@ -1,25 +1,29 @@
 lines = File.open('input.txt').readlines.map(&:chomp)
 
 x = 1
-cycle = 1
-
-key_signals = [20, 60, 100, 140, 180, 220]
-signals = []
-puts "#{cycle} - n/a - #{x}"
+cycle = 0
+diagram = [[], [], [], [], [], []]
 lines.each_with_index do |line, i|
     code = line.split(' ')[0]
 
     if code == 'noop'
+        draw_row = cycle / 40
+        shape = (x-1..x+1).include?(cycle % 40) ? '#' : '.'
+        diagram[draw_row] << shape
         cycle += 1
     else
+        draw_row = cycle / 40
+        shape = (x-1..x+1).include?(cycle % 40) ? '#' : '.'
+        diagram[draw_row] << shape
         cycle += 1
-        signals << cycle * x if key_signals.include?(cycle)
+
+        draw_row = cycle / 40
+        shape = (x-1..x+1).include?(cycle % 40) ? '#' : '.'
+        diagram[draw_row] << shape
         cycle += 1
+
         x += line.split(' ')[1].to_i
     end
-
-    signals << cycle * x if key_signals.include?(cycle)
-    puts "#{cycle} - #{line} - #{x}"
 end
 
-puts signals.reduce(:+)
+diagram.each {|line| puts line.join('')}
