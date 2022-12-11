@@ -2,7 +2,6 @@ lines = File.open('input.txt').readlines.map(&:chomp)
 paragraphs = []
 lines.each_slice(7) {|p| paragraphs << p}
 monkey_items = paragraphs.map {|p| p[1].split(': ')[1].split(', ').map(&:to_i) }
-puts monkey_items[0].length
 monkey_inspection_count = monkey_items.map{ |_| 0}
 number_of_rounds = 20
 
@@ -32,7 +31,7 @@ end
 def monkey_destination(paragraph, item)
     divisible = item % paragraph[3].split(" by ")[1].to_i == 0
 
-    paragraph[4].split(" monkey ")[1].to_i if divisible
+    return paragraph[4].split(" monkey ")[1].to_i if divisible
     paragraph[5].split(" monkey ")[1].to_i
 end
 
@@ -58,8 +57,6 @@ number_of_rounds.times do
             destination_monkey = monkey_destination(paragraph, item)
             monkey_items[destination_monkey] << item
         end
-
-        puts print_monkeys monkey_items
     end
 end
 
