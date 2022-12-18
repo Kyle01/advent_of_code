@@ -3,7 +3,7 @@ paragraphs = []
 lines.each_slice(7) {|p| paragraphs << p}
 monkey_items = paragraphs.map {|p| p[1].split(': ')[1].split(', ').map(&:to_i) }
 monkey_inspection_count = monkey_items.map{ |_| 0}
-number_of_rounds = 20
+number_of_rounds = 10000
 
 def map_value (old_value, line)
     return old_value * old_value if line.include?('old * old')
@@ -48,9 +48,10 @@ end
 
 puts print_monkeys monkey_items
 
-number_of_rounds.times do 
+number_of_rounds.times do |r|
+    puts r
     paragraphs.each_with_index do |paragraph, monkey_number|
-        monkey_items[monkey_number] = monkey_items[monkey_number].map{ |item| map_value(item, paragraph[2]) / 3} 
+        monkey_items[monkey_number] = monkey_items[monkey_number].map{ |item| map_value(item, paragraph[2])} 
         monkey_inspection_count[monkey_number] += monkey_items[monkey_number].length
         until monkey_items[monkey_number].empty?
             item = monkey_items[monkey_number].shift
@@ -58,6 +59,8 @@ number_of_rounds.times do
             monkey_items[destination_monkey] << item
         end
     end
+
+    puts print_monkeys monkey_items
 end
 
 puts monkey_inspection_count.join(',')
