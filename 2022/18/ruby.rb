@@ -2,6 +2,47 @@ lines = File.open('input.txt').readlines.map(&:chomp)
 
 # lets name the sides under, over, north, south, east, west
 
+
+def find_trapped_faces(lines)
+    min = nil 
+    max = nil 
+    trapped_squares = 0
+
+    lines.each do |line|
+        x = line.split(',')[0].to_i
+        y = line.split(',')[1].to_i
+        z = line.split(',')[2].to_i
+
+        min = [x,y,z].min if !min || [x,y,z].min > min 
+        max = [x,y,z].max if !max || [x,y,z].max > max 
+    end
+
+    x, y, z = min, min, min 
+
+    while x <= max 
+        while y <= max 
+            while z <= max 
+                check = true
+                str = "#{x},#{y},#{z}"
+                check = false if lines.include?(str)
+                check = false unless lines.include?("#{x},#{y},#{z+1}")
+                check = false unless lines.include?("#{x},#{y},#{z-1}")
+                check = false unless lines.include?("#{x},#{y+1},#{z}")
+                check = false unless lines.include?("#{x},#{y-1},#{z}")
+                check = false unless lines.include?("#{x+1},#{y},#{z}")
+                check = false unless lines.include?("#{x-1},#{y},#{z}")
+
+                trapped_squares += 1 if check 
+                z += 1 
+            end
+            y += 1 
+        end
+        x += 1
+    end
+
+    trapped_squares * 6
+end
+
 def adjacent_side?(lines, line, side)
     adjacent = false
     test_line = ''
@@ -45,4 +86,4 @@ end
 total_faces = 0 
 lines.each {|line| total_faces += count_faces(lines, line)}
 
-puts total_faces
+puts find_trapped_faces(lines)
