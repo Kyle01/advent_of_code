@@ -12,7 +12,6 @@ class Game
         @possible_red, @possible_blue, @possible_green = 0, 0, 0 
 
         moves = line.split(": ")[1].gsub(';', ',').split(', ')
-        puts moves.join(" | ")
 
         moves.select{|x| x.include?('red')}.each do |move|
             considered_value = move.split(' ')[0].to_i
@@ -38,13 +37,17 @@ class Game
         true
     end
 
+    def game_power
+        @possible_blue * @possible_red * @possible_green
+    end
+
 end
 
 solution = 0 
 lines.each do |line|
     game = Game.new(line)
 
-    solution += game.id if game.possible_game?
+    solution += game.game_power
 end
 
 puts solution
