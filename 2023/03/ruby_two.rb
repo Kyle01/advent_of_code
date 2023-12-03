@@ -149,8 +149,6 @@ lines.each_with_index do |line, i|
     while k < line.length 
         if line[k] == STAR_SYMBOL
             adjacent_nums = adjacent_numbers(lines, i, k) 
-            puts adjacent_nums.join(',')
-            puts
             gear_ratios += adjacent_nums[0] * adjacent_nums[1] if adjacent_nums.length == 2
         end
         k += 1
