@@ -3,7 +3,6 @@ score = 0
 card_count = Array.new(lines.count, 1)
 
 lines.each_with_index do |line, i|
-    puts i + 1
     winning_numbers = line.split(" | ")[0].split(": ")[1].split(" ").map(&:to_i)
     card_numbers = line.split(" | ")[1].split(" ").map(&:to_i)
 
