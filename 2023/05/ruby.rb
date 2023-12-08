@@ -28,7 +28,7 @@ class FarmMap
     end
 end
 
-seeds = lines[0].split(': ')[1].split(" ").map(&:to_i)
+seed_range = lines[0].split(': ')[1].split(" ").map(&:to_i)
 
 k = 0 
 while k < lines.length
@@ -92,17 +92,39 @@ while k < lines.length
     k += 1
 end
 
-locations = []
-seeds.each do |seed|
-    loc = seed 
-    loc = seed_soil_map.convert(loc)
-    loc = soil_fertiziler_map.convert(loc)
-    loc = fertilizer_water_map.convert(loc)
-    loc = water_light_map.convert(loc)
-    loc = light_temperature_map.convert(loc)
-    loc = temperature_humidity_map.convert(loc)
-    loc = humidity_location_map.convert(loc)
-    locations << loc
+min = nil
+k = 0 
+previous_nums = []
+while k < seed_range.length 
+    start = seed_range[k]
+    range = seed_range[k + 1]
+
+    i = 0
+    previous_nums = [] 
+    while i < range
+        loc = start + i
+        loc = seed_soil_map.convert(loc)
+        loc = soil_fertiziler_map.convert(loc)
+        loc = fertilizer_water_map.convert(loc)
+        loc = water_light_map.convert(loc)
+        loc = light_temperature_map.convert(loc)
+        loc = temperature_humidity_map.convert(loc)
+        loc = humidity_location_map.convert(loc)
+        min = loc if min.nil? || loc < min
+        if (previous_nums.length > 100000 && previous_nums.max - previous_nums.min < 1000001) 
+            i = range
+        elsif previous_nums.length < 100001
+            previous_nums << loc 
+        else 
+            previous_nums << loc 
+            previous_nums.shift
+        end
+        puts previous_nums.max - previous_nums.min
+        puts loc
+        i += 1
+    end
+    puts k 
+    k += 2
 end
 
-puts locations.min
+puts min
