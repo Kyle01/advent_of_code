@@ -15,6 +15,14 @@ class OasisMap
             end
             @data << next_line
         end
+
+        k = @data.length - 1
+        @data[k] << 0
+        k -= 1 
+        while k >= 0 
+            @data[k] << @data[k][-1] + @data[k+1][-1]
+            k -= 1
+        end
     end
 
     def to_s 
@@ -29,9 +37,16 @@ class OasisMap
         end
         str
     end
+
+    def history_value
+        @data[0][-1]
+    end
 end
 
+solution = 0
 lines.each do |line|
     map = OasisMap.new(line)
-    puts map
+    solution += map.history_value
 end
+
+puts solution
