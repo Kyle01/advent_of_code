@@ -17,10 +17,10 @@ class OasisMap
         end
 
         k = @data.length - 1
-        @data[k] << 0
+        @data[k].unshift(0)
         k -= 1 
         while k >= 0 
-            @data[k] << @data[k][-1] + @data[k+1][-1]
+            @data[k].unshift(@data[k][0] - @data[k+1][0])
             k -= 1
         end
     end
@@ -39,7 +39,7 @@ class OasisMap
     end
 
     def history_value
-        @data[0][-1]
+        @data[0][0]
     end
 end
 
