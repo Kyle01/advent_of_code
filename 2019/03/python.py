@@ -12,6 +12,7 @@ def str_point(point):
 def line_path(str):
     path = {}
     current_location = [0,0]
+    steps = 0
     instructions = str.split(',')
     for instruction in instructions:
         direction = instruction[0]
@@ -19,16 +20,20 @@ def line_path(str):
         for x in range(0, distance):
             match direction:
                 case 'L':
+                    steps += 1
                     current_location = [current_location[0]-1, current_location[1]]
                 case 'R':
+                    steps += 1
                     current_location = [current_location[0]+1, current_location[1]]
                 case 'U':
+                    steps += 1
                     current_location = [current_location[0], current_location[1]-1]
                 case 'D':
+                    steps += 1
                     current_location = [current_location[0], current_location[1]+1]
 
             str_path = str_point(current_location)
-            path[str_path] = manhattan_distance(current_location)
+            path[str_path] = steps
     
     return path
 
@@ -36,7 +41,7 @@ def find_distances(dict_one, dict_two):
     distances = []
     for point in dict_one.keys():
         if point in  dict_two:
-            distances.append(dict_one[point])
+            distances.append(dict_one[point] + dict_two[point])
     
     return distances
 
