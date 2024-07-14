@@ -8,15 +8,15 @@ k = LOWER_RANGE
 
 def has_adjacent_digits(num):
     chars = list(str(num))
-    if(chars[0] == chars[1]):
+    if(chars[0] == chars[1] and chars.count(chars[0]) == 2):
         return True
-    if(chars[1] == chars[2]):
+    if(chars[1] == chars[2] and chars.count(chars[1]) == 2):
         return True
-    if(chars[2] == chars[3]):
+    if(chars[2] == chars[3] and chars.count(chars[2]) == 2):
         return True
-    if(chars[3] == chars[4]):
+    if(chars[3] == chars[4] and chars.count(chars[3]) == 2):
         return True
-    if(chars[4] == chars[5]):
+    if(chars[4] == chars[5] and chars.count(chars[4]) == 2):
         return True
     return False
 
