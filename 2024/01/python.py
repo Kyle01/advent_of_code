@@ -18,7 +18,7 @@ list_one.sort()
 list_two.sort()
 
 answer = 0
-for idx, first_el in enumerate(list_one):
-    answer += abs(first_el - list_two[idx])
+for el in list_one:
+    answer += el * list_two.count(el)
 
 print(answer)
