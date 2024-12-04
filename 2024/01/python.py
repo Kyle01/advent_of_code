@@ -1,7 +1,4 @@
-import math
-
 input = []
-
 with open('./input.txt') as f:
     for line in f:
         input.append(line.strip())
