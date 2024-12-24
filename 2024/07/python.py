@@ -9,11 +9,12 @@ with open('./input.txt') as f:
 print(len(input))
 
 def possible_keys(len):
-    symbols = ['+', '*']
+    symbols = ['+', '*', '|']
     helper = []
     for x in range(len):
         helper.append(symbols[0])
         helper.append(symbols[1])
+        helper.append(symbols[2])
     
     return list(combinations(helper, len))
 
@@ -30,8 +31,12 @@ for l, line in enumerate(input):
         for x, sym in enumerate(chance):
             if sym == '+':
                 attempt += numbers[x+1]
-            else:
+            elif sym == '*':
                 attempt *= numbers[x+1]
+            else:
+                attempt = int(f"{attempt}{numbers[x+1]}")
+            if attempt > solution:
+                break
         if attempt == solution:
             output += attempt
             break
